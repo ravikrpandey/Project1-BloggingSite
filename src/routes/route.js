@@ -12,7 +12,7 @@ const BlogController= require("../Controller/BlogController")
 router.post("/createAuthor", AutherController.createAuther);
 router.post("/createBlog", BlogController.createBlog);
 router.get("/Blogs", BlogController.getBlog);
-router.put("/updateBlogs", BlogController.updateBlog);
+// router.put("/updateBlogs", BlogController.updateBlog);
 
 
 
