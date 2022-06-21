@@ -29,7 +29,31 @@ const getBlog = async function (req, res) {
         res.send(err.message)
      }
 }
-module.exports.createBlog = createBlog;
-module.exports.getBlog = getBlog;
+const updateBlog = async function(req, res) {
+
+    try {
+        let userId = req.params.userId;
+        let user = await BlogModel1.findById(req.params.userId);
+    
+        if (!user) {
+          return res.status(401).send("No such user exists");
+        }
+    
+        let userData = req.body;
+        let updatedBlog = await BlogModel1.findOneAndUpdate({ _id: userId }, userData, { new: true });
+        res.status(200).send({ msg: "updated blog document Successfully", data: updatedBlog });
+    
+      } catch (err) {
+        console.log("This is the error:", err.message)
+        res.status(500).send({ mgs: "Error", error: err.message })
+      }
+    };
+
+
+
+module.exports.createBlog= createBlog;
+module.exports.getBlog= getBlog;
+module.exports.updateBlog= updateBlog;
+
 
 
