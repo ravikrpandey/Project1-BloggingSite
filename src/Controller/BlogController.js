@@ -24,7 +24,7 @@ const updateBlog = async function(req, res) {
         let user = await BlogModel1.findById(req.params.userId);
     
         if (!user) {
-          return res.status(401).send("No such user exists");
+          return res.status(401).send("No such blog exists");
         }
     
         let userData = req.body;
