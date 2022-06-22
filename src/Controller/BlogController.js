@@ -58,9 +58,10 @@ const deleteBlogById = async function (req, res) {
               .status(400)
               .send({ status: false, message: `BlogId is invalid.` });
           }
+
         let data = await blogModel.findOne({ _id: id });
         if (!data) {
-            return res.status(403).send({ status: false, message: "No such blog found"  })
+            return res.status(400).send({ status: false, message: "No such blog found"  })
         }
         let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: Date()}, { new: true })
         res.status(200).send({ status: true, dataa: Update })
@@ -68,14 +69,22 @@ const deleteBlogById = async function (req, res) {
         res.status(500).send({ status: false, Error: err.message });
     }
 }
-    const deleteBy = async function (req, res) {
+    const deleteByQuery  = async function (req, res) {
         try{
             let category = req.query.category
             let authorId = req.query.authorId
             let tags = req.query.tags
             let subcategory = req.query.subcategory
             let isPublished = req.query.isPublished
-            
+            if (!validator.isValidRequestBody(req.query)) {
+                return res.status(400).send({status: false, message: "Invalid request parameters. Please provide query details"});
+              }
+             
+              if (authorId) {
+                if (!validator.isValidObjectId(authorId)) {
+                  return res.status(400).send({ status: false,message: `authorId is not valid.`});
+                }
+              }
             let data = await blogModel.find({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] });
             if (!data) {
                 return res.status(403).send({ status: false, message: "no such data exists" })
@@ -92,7 +101,7 @@ const deleteBlogById = async function (req, res) {
 module.exports.createBlog = createBlog;
 module.exports.getBlog = getBlog;
 module.exports.deleteBlogById = deleteBlogById
-module.exports.deleteBy= deleteBy
+module.exports.deleteByQuery = deleteByQuery 
 module.exports.updateBlog= updateBlog
 
 
