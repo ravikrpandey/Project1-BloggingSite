@@ -55,21 +55,29 @@ const getBlog = async function (req, res) {
 const updateBlog = async function(req, res) {
 
     try {
-        let userId = req.params.userId;
-        let user = await BlogModel1.findById(req.params.userId);
+        let blogId = req.params.blogId;
+        if(!blogId) return res.status(400).send({status:false, msg:"no id found"})
+        // console.log(/blogId)
+        let user = await blogModel.findById(req.params.blogId);
+        // console.log(user)
     
-        if (!user) {
-          return res.status(401).send("No such user exists");
+        if (Object.keys(user)===0|| user.isDeleted===true) {
+          return res.status(401).send({status:false, msg: " no such data found"});
         }
     
         let userData = req.body;
-        let updatedBlog = await BlogModel1.findOneAndUpdate({ _id: userId }, userData, { new: true });
-        res.status(200).send({ msg: "updated blog document Successfully", data: updatedBlog });
+        if(Object.keys(userData).length=== 0) return res.status(400).send({status:false, msg:"no data to update"})
+        // console.log(userData)
+        userData.isPublished = true
+        userData.publishedAt = new Date()
+        let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId }, userData, { new: true });
+        console.log(updatedBlog)
+        res.status(200).send({status:true, msg:updatedBlog});
     
-      } catch (err) {
+      } catch (err) { 
         console.log("This is the error:", err.message)
-        res.status(500).send({ mgs: "Error", error: err.message })
-      }
+        res.status(500).send({status:false, msg:err.message})
+      } 
     };
 
 
