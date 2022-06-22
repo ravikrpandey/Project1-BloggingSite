@@ -1,6 +1,5 @@
-
-
 const blogModel = require("../model/BlogModel1")
+const validator = require("../validator/validator")
 
 const createBlog = async function (req, res) {
     try {
@@ -32,17 +31,15 @@ const getBlog = async function (req, res) {
 const updateBlog = async function (req, res) {
 
     try {
-        let userId = req.params.userId;
-        let user = await blogModel.findById(req.params.userId);
+        let updateBlog = req.body
+        let blogId = req.params.blogId
 
-        if (!user) {
-            return res.status(401).send("No such blog exists");
-        }
+        // console.log(blogId)
 
-        let userData = req.body;
-        let updatedBlog = await blogModel.findOneAndUpdate({ _id: userId },
-            userData,
-            { new: true });
+    
+        let updatedBlog = await blogModel.findByIdAndUpdate({ _id: blogId },
+            updateBlog,
+            { new: true })
         res.status(200).send({ msg: "updated blog document Successfully", data: updatedBlog });
 
     } catch (err) {
@@ -52,10 +49,62 @@ const updateBlog = async function (req, res) {
 };
 
 
+const deleteBlogById = async function (req, res) {
+
+    try {
+        let id = req.params.blogId;
+        if (!validator.isValidObjectId(id)) {
+            return res
+                .status(400)
+                .send({ status: false, message: `BlogId is invalid.` });
+        }
+
+        let data = await blogModel.findOne({ _id: id });
+        if (!data) {
+            return res.status(400).send({ status: false, message: "No such blog found" })
+        }
+        let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: Date() }, { new: true })
+        res.status(200).send({ status: true, dataa: Update })
+    } catch (err) {
+        res.status(500).send({ status: false, Error: err.message });
+    }
+}
+const deleteByQuery = async function (req, res) {
+    try {
+        let category = req.query.category
+        let authorId = req.query.authorId
+        let tags = req.query.tags
+        let subcategory = req.query.subcategory
+        let isPublished = req.query.isPublished
+        if (!validator.isValidRequestBody(req.query)) {
+            return res.status(400).send({ status: false, message: "Invalid request parameters. Please provide query details" });
+        }
+
+        if (authorId) {
+            if (!validator.isValidObjectId(authorId)) {
+                return res.status(400).send({ status: false, message: `authorId is not valid.` });
+            }
+        }
+        let data = await blogModel.find({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] });
+        if (!data) {
+            return res.status(403).send({ status: false, message: "no such data exists" })
+        }
+        let Update = await blogModel.updateMany({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] }, { $set: { isDeleted: true } }, { new: true })
+        res.send({ status: true, data: Update })
+    } catch (err) {
+        res.status(500).send({ status: false, Error: err.message });
+    }
+
+}
+
 
 module.exports.createBlog = createBlog;
 module.exports.getBlog = getBlog;
-module.exports.updateBlog = updateBlog;
+module.exports.deleteBlogById = deleteBlogById
+module.exports.deleteByQuery = deleteByQuery
+module.exports.updateBlog = updateBlog
+
+
 
 
 
