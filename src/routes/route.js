@@ -13,7 +13,11 @@ router.post("/createAuthor", AutherController.createAuther);
 router.post("/createBlog", BlogController.createBlog);
 router.get("/Blogs", BlogController.getBlog);
 router.put("/updateBlogs", BlogController.updateBlog);
-router.delete("/deleteBlog/blogId", BlogController.deleteBlogById);
+router.delete("/blogs/:blogId", BlogController.deleteBlogById);
+router.delete('/blogs', BlogController.deleteBy)
+router.put("/updateBlogs/:blogId", BlogController.updateBlog);
+
+
 
 
 

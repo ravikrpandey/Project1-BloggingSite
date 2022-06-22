@@ -1,4 +1,4 @@
-const autherModel= require("../models/AutherModel1")
+const autherModel= require("../model/AutherModel1")
 
 const createAuther= async function (req, res) {
     let data= req.body
