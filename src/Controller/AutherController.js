@@ -13,7 +13,7 @@ const createAuther= async function (req, res) {
      res.status(201).send({msg: savedData})}
     }
     catch(err){
-        res.send({error:err.message})
+        res.status(500).send({error:err.message})
     }
 }
 

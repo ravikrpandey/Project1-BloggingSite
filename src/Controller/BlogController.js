@@ -13,7 +13,7 @@ const createBlog = async function (req, res) {
             res.status(400).send({ msg: "authorid is not valid" })
         }
     }
-    catch (err) { res.send(err.message) }
+    catch (err) { res.status(500).send(err.message) }
 }
 
 const getBlog = async function (req, res) {
