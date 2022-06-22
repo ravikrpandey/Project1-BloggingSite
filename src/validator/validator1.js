@@ -1,8 +1,13 @@
 const AutherController= require("../Controller/AutherController")
 const checker=function(data){
     let rdata="";
+    // if (!/^[a-zA-Z]+$/.test(data.fname)||!/^[a-zA-Z]+$/.test(data.lname)){
+    //     const f1info="  fname or lname cannot be empty and cannot have spaces "
+    //     rdata=rdata+f1info;
+    // }
+ 
     if ( /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.fname)|| /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.lname)){
-        const specialchar="  fanme and lname cannot  have special charaters "
+        const specialchar="  fanme and lname cannot  have special charaters or white spaces "
         rdata=rdata+specialchar;
     }
     else if (/\d/.test(data.fname)||/\d/.test(data.lname)){
@@ -10,11 +15,7 @@ const checker=function(data){
         rdata=rdata+f2info;
 
     }
-    else if (!/^[a-zA-Z]+$/.test(data.fname)||!/^[a-zA-Z]+$/.test(data.lname)){
-        const f1info="  fname or lname cannot be empty and cannot start with space "
-        rdata=rdata+f1info;
-    }
- 
+     
    
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)){
         const emailvalidator="Email is envalid "
