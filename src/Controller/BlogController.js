@@ -29,25 +29,27 @@ const getBlog = async function (req, res) {
     }
 }
 const updateBlog = async function (req, res) {
-
     try {
-        let updateBlog = req.body
-        let blogId = req.params.blogId
+        let blogId = req.params.blogId;
+        if (!blogId) return res.status(400).send({ status: false, msg: "no id found" })
 
-        // console.log(blogId)
+        let user = await blogModel.findById(req.params.blogId)
 
-    
-        let updatedBlog = await blogModel.findByIdAndUpdate({ _id: blogId },
-            updateBlog,
-            { new: true })
-        res.status(200).send({ msg: "updated blog document Successfully", data: updatedBlog });
+        if (!user) {
+            return res.status(400).send({ status: false, msg: "no such user available" })
+        }
+
+        let updateData = req.body
+        if (Object.keys(updateData).length === 0) return res.status(400).send({ status: false, msg: "data not found" })
+
+        
+        let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId }, updateData, { new: true });
+        res.status(200).send({ status: true, msg: updatedBlog })
 
     } catch (err) {
-        console.log("This is the error:", err.message)
-        res.status(500).send({ mgs: "Error", error: err.message })
+        res.status(500).send({ status: false, msg: err.message })
     }
 };
-
 
 const deleteBlogById = async function (req, res) {
 
