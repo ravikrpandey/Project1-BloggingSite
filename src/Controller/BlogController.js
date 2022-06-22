@@ -19,41 +19,43 @@ const createBlog = async function (req, res) {
 
 const getBlog = async function (req, res) {
     try {
-       
+
         let blog = await blogModel.find();
         if (blog) {
             res.status(200).send({ msg: blog })
-        } if(!blog) { res.status(404).send({ msg: "No document find" }) }
+        } if (!blog) { res.status(404).send({ msg: "No document find" }) }
     }
-    catch (err) { 
+    catch (err) {
         res.send(err.message)
-     }
+    }
 }
-const updateBlog = async function(req, res) {
+const updateBlog = async function (req, res) {
 
     try {
         let userId = req.params.userId;
-        let user = await BlogModel1.findById(req.params.userId);
-    
+        let user = await blogModel.findById(req.params.userId);
+
         if (!user) {
-          return res.status(401).send("No such blog exists");
+            return res.status(401).send("No such blog exists");
         }
-    
+
         let userData = req.body;
-        let updatedBlog = await BlogModel1.findOneAndUpdate({ _id: userId }, userData, { new: true });
+        let updatedBlog = await blogModel.findOneAndUpdate({ _id: userId },
+            userData,
+            { new: true });
         res.status(200).send({ msg: "updated blog document Successfully", data: updatedBlog });
-    
-      } catch (err) {
+
+    } catch (err) {
         console.log("This is the error:", err.message)
         res.status(500).send({ mgs: "Error", error: err.message })
-      }
-    };
+    }
+};
 
 
 
-module.exports.createBlog= createBlog;
-module.exports.getBlog= getBlog;
-module.exports.updateBlog= updateBlog;
+module.exports.createBlog = createBlog;
+module.exports.getBlog = getBlog;
+module.exports.updateBlog = updateBlog;
 
 
 

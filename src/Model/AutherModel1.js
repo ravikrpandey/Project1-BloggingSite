@@ -34,4 +34,4 @@ const autherSchema = new mongoose.Schema( {
 
 },{timestamps: true});
 
-module.exports = mongoose.model('Auther', autherSchema);
+module.exports = mongoose.model('Auther', autherSchema); //authers
