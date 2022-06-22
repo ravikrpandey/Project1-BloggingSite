@@ -20,6 +20,7 @@ const createBlog = async function (req, res) {
 const getBlog = async function (req, res) {
     try {
        
+        
         let blog = await blogModel.find();
         if (blog) {
             res.status(200).send({ msg: blog })
