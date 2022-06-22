@@ -16,19 +16,42 @@ const createBlog = async function (req, res) {
     catch (err) { res.send(err.message) }
 }
 
+
 const getBlog = async function (req, res) {
     try {
-       
-        
-        let blog = await blogModel.find();
-        if (blog) {
-            res.status(200).send({ msg: blog })
-        } if(!blog) { res.status(404).send({ msg: "No document find" }) }
+        //getting data from query params
+        let filters = req.query
+        console.log(filters)
+        //checking if there is any filter present or not
+        if (Object.keys(filters).length >= 1) {
+            //adding more conditions to the filter
+            filters.isDeleted = false
+            filters.isPublished = true
+            //checking if we have a tag filter to match
+            if(filters.tags){
+                //if we have a tag filter then we are adding this condition to the filter
+                filters.tags = {$elemMatch:{$eq:filters.tags}}
+                console.log(filters)
+            }
+            //checking if we have a subcatagory filter to match
+            if(filters.subcategory){
+                //if we have a subcatagory filter then we are adding this conditon to the filter
+                filters.subcategory = {$elemMatch:{$eq:filters.subcategory}}
+            }
+            //finding the data using the filter
+            let filteredBlogs = await blogModel.find(filters)
+            if (filteredBlogs.length === 0) return res.status(404).send({ status: false, msg: "No such data available" })
+            else return res.status(200).send({ status: true, msg: filteredBlogs })
+        }
+        let blogs = await blogModel.find({ isDeleted: false, isPublished: true })
+        if (blogs.length == 0) res.status(404).send({ status: false, msg: "No result found" })
+        res.status(200).send({ status: true, msg: blogs })
     }
-    catch (err) { 
-        res.send(err.message)
-     }
-}
+    catch (err) {
+        res.status(500).send({ status: false, msg: err.message })
+    }
+} 
+
 const updateBlog = async function(req, res) {
 
     try {
