@@ -29,6 +29,15 @@ const authAndAuthorize = async function (req, res, next) {
             }
 
         }
+        if (req.query.authorId) {
+            authorId = req.query.authorId
+            if (decodedToken.authorId != authorId) {
+            
+                return res.status(403).send({ status: false, msg: "You are not allowed to modify or publish" });
+            }
+
+        }
+
 
 
         next()

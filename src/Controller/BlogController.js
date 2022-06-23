@@ -128,10 +128,13 @@ const deleteByQuery = async function (req, res) {
             return res.status(400).send({ status: false, message: "Invalid request parameters. Please provide query details" });
         }
 
-        if (authorId) {
+        if (!authorId) {
+            return res.status(400).send({status:false, msg:"autherId is required"})
+        }
+        else{
             if (!validator.isValidObjectId(authorId)) {
                 return res.status(400).send({ status: false, message: `authorId is not valid.` });
-            }
+        }
         }
         let data = await blogModel.find({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] });
         if (!data) {
