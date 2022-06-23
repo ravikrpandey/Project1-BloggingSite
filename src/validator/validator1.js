@@ -18,7 +18,7 @@ const checker=function(data){
      
    
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)){
-        const emailvalidator="Email is envalid "
+        const emailvalidator="Email is invalid "
         rdata=rdata+emailvalidator;
     }
     if (/\s/.test(data.password)){

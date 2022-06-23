@@ -21,6 +21,9 @@ router.delete('/blogs', BlogController.deleteByQuery );
 
 router.put("/Blogs/:blogId", BlogController.updateBlog);
 
+router.post("/login", AutherController.loginAuthor);
+
+
 router.all("/**", function (req, res) {
     res.status(404).send({
         status: false,
