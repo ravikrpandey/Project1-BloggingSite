@@ -8,7 +8,7 @@ const middleware= require("../Middleware/auth2")
 
 
 
-validateToken
+
 
 router.post("/Authors", AutherController.createAuther);
 router.post("/login", AutherController.loginAuthor);
