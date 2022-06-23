@@ -114,7 +114,7 @@ const deleteBlogById = async function (req, res) {
              
               if (authorId) {
                 if (!validator.isValidObjectId(authorId)) {
-                  return res.status(400).send({ status: false,message: `authorId is not valid.`});
+                  return res.status(400).send({ status: false,message: "authorId is not valid."});
                 }
               }
             let data = await blogModel.find({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] });
