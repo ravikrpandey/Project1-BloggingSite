@@ -1,5 +1,6 @@
 
 const jwt = require("jsonwebtoken");
+const BlogModel1 = require("../model/BlogModel1");
 
 const authAndAuthorize = async function (req, res, next) {
     try {
@@ -8,7 +9,6 @@ const authAndAuthorize = async function (req, res, next) {
         if (!token) return res.send({ status: false, msg: "token must be present" });
 
         let decodedToken = jwt.verify(token, "Roshan");
-
         if (!decodedToken) {
 
             return res.status(403).send({ status: false, msg: "token is invalid" });
@@ -16,17 +16,20 @@ const authAndAuthorize = async function (req, res, next) {
         if (req.body.authorId) {
             let authorLoggedIn = req.body.authorId
             let authorToBeModified = decodedToken.authorId
-            if (!authorLoggedIn == authorToBeModified) {
+            if (authorLoggedIn != authorToBeModified) {
                 return res.status(403).send({ status: false, msg: "You are not allowed to modify or publish" });
             }
         }
-        if (req.query.authorId) {
-            let authorLoggedIn = req.query.authorId
-            let authorToBeModified = decodedToken.authorId
-            if (!authorLoggedIn == authorToBeModified) {
+        if (req.params.blogId) {
+            blogId = req.params.blogId
+            data = await BlogModel1.findById(blogId)
+            if (decodedToken.authorId != data.authorId.toString()) {
+            
                 return res.status(403).send({ status: false, msg: "You are not allowed to modify or publish" });
             }
+
         }
+
 
         next()
     }
