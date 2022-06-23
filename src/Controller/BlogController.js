@@ -21,7 +21,6 @@ const getBlog = async function (req, res) {
     try {
         //getting data from query params
         let filters = req.query
-        console.log(filters)
         //checking if there is any filter present or not
         if (Object.keys(filters).length >= 1) {
             //adding more conditions to the filter
@@ -55,23 +54,42 @@ const getBlog = async function (req, res) {
 const updateBlog = async function (req, res) {
 
     try {
+        //get the blogId from params
         let blogId = req.params.blogId;
-        if (!blogId) return res.status(400).send({ status: false, msg: "no id found" })
-        // console.log(/blogId)
-        let user = await blogModel.findById(req.params.blogId);
-        // console.log(user)
 
+        let user = await blogModel.findById(req.params.blogId);
+
+        //checking if any data associated with the blogId exist or not
+        //Also making sure that isDeleted is false
         if (Object.keys(user) === 0 || user.isDeleted === true) {
-            return res.status(401).send({ status: false, msg: " no such data found" });
+            return res.status(404).send({ status: false, msg: " no such data found" });
         }
 
+        //Getting the user data from the req.body
         let userData = req.body;
+        //returning an eeror if we dont have any data in the req.body
         if (Object.keys(userData).length === 0) return res.status(400).send({ status: false, msg: "no data to update" })
-        // console.log(userData)
+
+        //checking if tags is present to be uppdated
+        if (userData.tags) {
+            //pushing the data into the tag array
+            userData.$push = { tags: userData.tags }
+            //deleting the existing tags key
+            delete userData.tags
+        }
+
+        //checking if subcatagory is present to be updated
+        if (userData.subcategory) {
+            //pusing the date into the subcatagory array
+            userData.$push = { subcategory: userData.subcategory }
+            // deleting the existing subcategory key
+            delete userData.subcategory
+        }
+
         userData.isPublished = true
         userData.publishedAt = new Date()
+        //updating the data
         let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId }, userData, { new: true });
-        console.log(updatedBlog)
         res.status(200).send({ status: true, msg: updatedBlog });
 
     } catch (err) {
