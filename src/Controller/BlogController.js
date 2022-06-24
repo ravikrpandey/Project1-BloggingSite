@@ -103,17 +103,17 @@ const deleteBlogById = async function (req, res) {
     try {
         let id = req.params.blogId;
         if (!validator.isValidObjectId(id)) {
-            return res.status(400).send({ status: false, message: `BlogId is invalid.` });
+            return res.status(400).send({ status: false, msg: `BlogId is invalid.` });
         }
 
         let data = await blogModel.findOne({ _id: id });
         if (!data) {
-            return res.status(400).send({ status: false, message: "No such blog found" })
+            return res.status(400).send({ status: false, msg: "No such blog found" })
         }
         let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: Date() }, { new: true })
-        res.status(200).send({ status: true, dataa: Update })
+        res.status(200).send({ status: true, data: Update })
     } catch (err) {
-        res.status(500).send({ status: false, Error: err.message });
+        res.status(500).send({ status: false, msg: err.message });
     }
 }
 const deleteByQuery = async function (req, res) {
@@ -147,12 +147,4 @@ const deleteByQuery = async function (req, res) {
 }
 
 
-module.exports.createBlog = createBlog;
-module.exports.getBlog = getBlog;
-module.exports.deleteBlogById = deleteBlogById
-module.exports.deleteByQuery = deleteByQuery
-module.exports.updateBlog = updateBlog
-
-
-
-
+module.exports = {createBlog,createBlog,getBlog,deleteBlogById,deleteByQuery,updateBlog};
