@@ -127,7 +127,7 @@ const deleteByQuery = async function (req, res) {
         if (!validator.isValidRequestBody(req.query)) {
             return res.status(400).send({ status: false, message: "Invalid request parameters. Please provide query details" });
         }
-
+        
         if (!authorId) {
             return res.status(400).send({status:false, msg:"autherId is required"})
         }
