@@ -28,14 +28,13 @@ const getBlog = async function (req, res) {
             filters.isPublished = true
             //checking if we have a tag filter to match
             if (filters.tags) {
-                //if we have a tag filter then we are adding this condition to the filter
-                filters.tags = { $elemMatch: { $eq: filters.tags } }
-                console.log(filters)
+                let tagArray = filters.tags.split(',').map(String)
+                filters.tags= { $in: tagArray}
             }
             //checking if we have a subcatagory filter to match
             if (filters.subcategory) {
-                //if we have a subcatagory filter then we are adding this conditon to the filter
-                filters.subcategory = { $elemMatch: { $eq: filters.subcategory } }
+                let subCatArray = filters.subcategory.split(',').map(String)
+                filters.subcategory= { $in: subCatArray}
             }
             //finding the data using the filter
             let filteredBlogs = await blogModel.find(filters)
