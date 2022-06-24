@@ -22,8 +22,10 @@ const createAuther = async function (req, res) {
 const loginAuthor = async function (req, res) {
     try {
         let authorEmail = req.body.email;
+        // console.log(authorEmail)
         let password = req.body.password;
-        let author = await AutherModel1.findOne({ emailId: authorEmail, password: password });
+        let author = await AutherModel1.findOne({ email: authorEmail, password: password });
+        // console.log(author)
         if (author) {
             let token = jwt.sign(
                 {
@@ -41,7 +43,6 @@ const loginAuthor = async function (req, res) {
     catch(err){res.status(500).send({Error:err.message})}
 };
 
-module.exports.createAuther = createAuther;
-module.exports.loginAuthor = loginAuthor;
 
+module.exports = {createAuther,loginAuthor};
 
