@@ -28,14 +28,31 @@ const getBlog = async function (req, res) {
             filters.isPublished = true
             //checking if we have a tag filter to match
             if (filters.tags) {
-                let tagArray = filters.tags.split(',').map(String)
-                filters.tags= { $in: tagArray}
+                let tagArray
+                if (filters.tags.includes(",")) {
+                    tagArray = filters.tags.split(",").map(String).map(x => x.trim())
+                    filters.tags = { $all: tagArray }
+                } else {
+                    tagArray = filters.tags.trim().split(" ").map(String).map(x => x.trim())
+                    filters.tags = { $all: tagArray }
+                }
             }
+
+
             //checking if we have a subcatagory filter to match
             if (filters.subcategory) {
-                let subCatArray = filters.subcategory.split(',').map(String)
-                filters.subcategory= { $in: subCatArray}
+                let subcatArray
+                if (filters.subcategory.includes(",")) {
+                    subcatArray = filters.subcategory.split(",").map(String).map(x => x.trim())
+                    filters.subcategory = { $all: subcatArray }
+                }
+                else {
+                    subcatArray = filters.subcategory.trim().split(" ").map(String).map(x => x.trim())
+                    filters.subcategory = { $all: subcatArray }
+                }
             }
+
+
             //finding the data using the filter
             let filteredBlogs = await blogModel.find(filters)
             if (filteredBlogs.length === 0) return res.status(404).send({ status: false, msg: "No such data available" })
@@ -128,18 +145,18 @@ const deleteByQuery = async function (req, res) {
         }
 
         if (!authorId) {
-            return res.status(400).send({status:false, msg:"autherId is required"})
+            return res.status(400).send({ status: false, msg: "autherId is required" })
         }
-        else{
+        else {
             if (!validator.isValidObjectId(authorId)) {
                 return res.status(400).send({ status: false, message: `authorId is not valid.` });
-        }
+            }
         }
         let data = await blogModel.find({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] });
         if (!data) {
             return res.status(403).send({ status: false, message: "no such data exists" })
         }
-        let Update = await blogModel.updateMany({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] }, { $set: { isDeleted: true, deletedAt:new Date()} }, { new: true })
+        let Update = await blogModel.updateMany({ $or: [{ category: category }, { authorId: authorId }, { tags: tags }, { subcategory: subcategory }, { isPublished: isPublished }] }, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
         res.send({ status: true, data: Update })
     } catch (err) {
         res.status(500).send({ status: false, Error: err.message });
