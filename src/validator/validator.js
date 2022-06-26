@@ -11,7 +11,17 @@ const isValidObjectId = function (objectId) {
   };
   const checker=function(data){
     let rdata="";
-
+    let missData="";
+   let  arr= ["fname","lname","title","email","password"]
+    for(let i=0;i<arr.length;i++){
+        if (!Object.keys(data).includes(arr[i])){
+            missData=missData+" "+arr[i];
+        }
+    }
+    if(missData){
+        return (missData+" is missing")}
+    data.fname=data.fname.trim();
+    data.lname=data.lname.trim();
      if (data.fname==""){
         const f2info="fname is required "
         rdata=rdata+f2info;
@@ -85,7 +95,12 @@ const isValidObjectId = function (objectId) {
 };
 
 
-module.exports.isValidObjectId =   isValidObjectId
-module.exports.isValidRequestBody =   isValidRequestBody 
-module.exports.checker=checker
+
+
+
+module.exports.isValidObjectId =   isValidObjectId;
+module.exports.isValidRequestBody =   isValidRequestBody ;
+module.exports.checker=checker;
+
+
 

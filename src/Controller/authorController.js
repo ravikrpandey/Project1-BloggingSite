@@ -5,8 +5,7 @@ const jwt=require("jsonwebtoken")
 const createAuthor = async function (req, res) {
     try {
         let data = req.body
-        data.fname=data.fname.trim();
-        data.lname=data.lname.trim();
+  
 
         let val = validate.checker(data)
         
@@ -25,10 +24,10 @@ const createAuthor = async function (req, res) {
 const loginAuthor = async function (req, res) {
     try {
         let authorEmail = req.body.email;
-        // console.log(authorEmail)
+        
         let password = req.body.password;
         let author = await authorModel.findOne({ email: authorEmail, password: password });
-        // console.log(author)
+  
         if (author) {
             let token = jwt.sign(
                 {
