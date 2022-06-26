@@ -1,4 +1,4 @@
-const blogModel = require("../model/BlogModel1")
+const blogModel = require("../model/blogModel")
 const validator = require("../validator/validator")
 
 const createBlog = async function (req, res) {
@@ -73,7 +73,7 @@ const updateBlog = async function (req, res) {
         //get the blogId from params
         let blogId = req.params.blogId;
 
-        let user = await blogModel.findById(req.params.blogId);
+        let user = await blogModel.findById(blogId);
 
         //checking if any data associated with the blogId exist or not
         //Also making sure that isDeleted is false
@@ -143,7 +143,7 @@ const deleteByQuery = async function (req, res) {
         }
 
         if (!authorId) {
-            return res.status(400).send({ status: false, msg: "autherId is required" })
+            return res.status(400).send({ status: false, msg: "authorId is required" })
         }
         else {
             if (!validator.isValidObjectId(authorId)) {

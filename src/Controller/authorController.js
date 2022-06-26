@@ -1,17 +1,17 @@
-const AutherModel1 = require("../model/AutherModel1")
-const autherModel = require("../model/AutherModel1")
-const validate = require("../validator/validator1")
+const authorModel = require("../Model/authorModel")
+const validate = require("../validator/validator")
 const jwt=require("jsonwebtoken")
 
-const createAuther = async function (req, res) {
+const createAuthor = async function (req, res) {
     try {
         let data = req.body
         let val = validate.checker(data)
+        varidator
         if (val) {
             res.status(400).send({ invalid: val })
         }
         if (!val) {
-            let savedData = await autherModel.create(data)
+            let savedData = await authorModel.create(data)
             res.status(201).send({ msg: savedData })
         }
     }
@@ -24,7 +24,7 @@ const loginAuthor = async function (req, res) {
         let authorEmail = req.body.email;
         // console.log(authorEmail)
         let password = req.body.password;
-        let author = await AutherModel1.findOne({ email: authorEmail, password: password });
+        let author = await authorModel.findOne({ email: authorEmail, password: password });
         // console.log(author)
         if (author) {
             let token = jwt.sign(
@@ -44,5 +44,5 @@ const loginAuthor = async function (req, res) {
 };
 
 
-module.exports = {createAuther,loginAuthor};
+module.exports = {createAuthor,loginAuthor};
 

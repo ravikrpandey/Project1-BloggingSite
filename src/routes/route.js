@@ -2,16 +2,18 @@
 
 const express = require('express');
 const router = express.Router();
-const AutherController= require("../Controller/AutherController")
-const BlogController= require("../Controller/BlogController")
+const authorController= require("../Controller/authorController")
+const BlogController= require("../Controller/blogController")
 const middleware= require("../Middleware/auth")
 
 
 
 
 
-router.post("/Authors", AutherController.createAuther);
-router.post("/login", AutherController.loginAuthor);
+router.post("/Authors", authorController.createAuthor);
+
+router.post("/login", authorController.loginAuthor);
+
 router.post("/Blogs", middleware.authAndAuthorize,BlogController.createBlog);
 
 router.get("/Blogs", middleware.authenticate,BlogController.getBlog);
