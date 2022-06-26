@@ -22,7 +22,9 @@ const createBlog = async function (req, res) {
 const getBlog = async function (req, res) {
     try {
         let filters = req.query
+        console.log(filters)
         Object.keys(filters).forEach(x => filters[x] = filters[x].trim())
+        console.log(filters)
 
         if (Object.keys(filters).length === 0) {
 
@@ -35,27 +37,17 @@ const getBlog = async function (req, res) {
             filters.isDeleted = false
             filters.isPublished = true
             if (filters.tags) {
-                let tagArray
                 if (filters.tags.includes(",")) {
-                    tagArray = filters.tags.split(",").map(String).map(x => x.trim())
+                    let tagArray = filters.tags.split(",").map(String).map(x => x.trim())
                     filters.tags = { $all: tagArray }
-                } 
-                // else {
-                //     tagArray = filters.tags.trim().split(" ").map(String).map(x => x.trim())
-                //     filters.tags = { $all: tagArray }
-                // }
+                }
             }
 
             if (filters.subcategory) {
-                let subcatArray
                 if (filters.subcategory.includes(",")) {
-                    subcatArray = filters.subcategory.split(",").map(String).map(x => x.trim())
+                   let subcatArray = filters.subcategory.split(",").map(String).map(x => x.trim())
                     filters.subcategory = { $all: subcatArray }
                 }
-                // else {
-                //     subcatArray = filters.subcategory.trim().split(" ").map(String).map(x => x.trim())
-                //     filters.subcategory = { $all: subcatArray }
-                // }
             }
 
 
@@ -74,7 +66,9 @@ const updateBlog = async function (req, res) {
 
     try {
         let blogId = req.params.blogId;
-
+        if (!validator.isValidObjectId(blogId)) {
+            return res.status(400).send({ status: false, msg: `BlogId is invalid. \n  and change it` });
+        }
         let user = await blogModel.findById(blogId);
 
         if (Object.keys(user) === 0 || user.isDeleted === true) {
@@ -84,16 +78,17 @@ const updateBlog = async function (req, res) {
         let userData = req.body;
         if (Object.keys(userData).length === 0) return res.status(400).send({ status: false, msg: "no data to update" })
 
-        if (userData.tags) {
-            userData.$push = { tags: userData.tags }
-            delete userData.tags
+        if (userData.tags||userData.subcategory) {
+            userData.$push = {}
+            if(userData.tags){
+                userData.$push.tags =  userData.tags 
+                delete userData.tags
+            }
+            if (userData.subcategory) {
+                userData.$push.subcategory = userData.subcategory
+                delete userData.subcategory
+            }
         }
-
-        if (userData.subcategory) {
-            userData.$push = { subcategory: userData.subcategory }
-            delete userData.subcategory
-        }
-
         userData.isPublished = true
         userData.publishedAt = new Date()
         let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId }, userData, { new: true });
@@ -127,8 +122,8 @@ const deleteBlogById = async function (req, res) {
 const deleteByQuery = async function (req, res) {
     try {
         let conditions = req.query
-        conditions.isDeleted=false
- 
+        conditions.isDeleted = false
+
         if (!validator.isValidRequestBody(conditions)) {
             return res.status(400).send({ status: false, msg: "Invalid request parameters. Please provide query details" });
         }
@@ -139,14 +134,14 @@ const deleteByQuery = async function (req, res) {
         else {
             if (!validator.isValidObjectId(authorId)) {
                 return res.status(400).send({ status: false, msg: "authorId is not valid." });
-        }
+            }
         }
         let data = await blogModel.find(conditions);
-  
+
         if (!data) {
-            return res.status(403).send({ status: false, msg: "no such data exists" })
+            return res.status(404).send({ status: false, msg: "no such data exists" })
         }
-        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: true, deletedAt:new Date()} }, { new: true })
+        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
         res.status(200).send({ status: true, msg: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
