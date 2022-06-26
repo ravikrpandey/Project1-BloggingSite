@@ -11,7 +11,7 @@ const authAndAuthorize = async function (req, res, next) {
         let decodedToken = jwt.verify(token, "Roshan");
         if (!decodedToken) {
 
-            return res.status(403).send({ status: false, msg: "token is invalid" });
+            return res.status(401).send({ status: false, msg: "token is invalid" });
         }
         if (req.body.authorId) {
             let authorLoggedIn = req.body.authorId
@@ -22,6 +22,8 @@ const authAndAuthorize = async function (req, res, next) {
         }
         if (req.params.blogId) {
             blogId = req.params.blogId
+            if(blogId.length!=24) return res.status(400).send({status:false, msg: "BlogId is invalid."})
+            if(!await blogModel.findOne({_id:blogId}))return res.status(400).send({status:false, msg: "BlogId is invalid."})
             data = await blogModel.findById(blogId)
             if (decodedToken.authorId != data.authorId.toString()) {
             
@@ -56,7 +58,7 @@ const authenticate = async function (req, res, next) {
 
         if (!decodedToken) {
 
-            return res.status(403).send({ status: false, msg: "token is invalid" });
+            return res.status(401).send({ status: false, msg: "token is invalid" });
         }
 
         next()
