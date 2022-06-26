@@ -74,7 +74,7 @@ const updateBlog = async function (req, res) {
     try {
         let blogId = req.params.blogId;
 
-        let user = await blogModel.findById(req.params.blogId);
+        let user = await blogModel.findById(blogId);
 
         if (Object.keys(user) === 0 || user.isDeleted === true) {
             return res.status(404).send({ status: false, msg: " no such data found" });
