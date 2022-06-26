@@ -1,12 +1,20 @@
 const blogModel = require("../Model/blogModel")
 const authorModel = require("../Model/authorModel")
 const validator = require("../validator/validator")
+const validate = require("../validator/validator")
+
 
 const createBlog = async function (req, res) {
     try {
         let data = req.body
+        let val = validate.checkerBlog(data)
+        
+        if ( val) {
+            return res.status(400).send({ status:false,msg: val })
+        }
         data.authorId=data.authorId.trim();
         let authorId = await authorModel.find({ _id: data.authorId })
+       
         if (authorId.length) {
             let savedData = await blogModel.create(data)
             res.status(201).send({ msg: savedData })
@@ -111,14 +119,6 @@ const deleteBlogById = async function (req, res) {
         }
         let Blog = await blogModel.findOne({ _id: id });
 
-<<<<<<< HEAD
-        let data = await blogModel.findOne({ _id: id, isDeleted:false });
-        if (!data) {
-            return res.status(404).send({ status: false, msg: "No such blog found" })
-        }
-        let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: new Date() }, { new: true })
-        res.status(200).send({ status: true, msg: Update })
-=======
         if (!Blog) {
           return res.status(400).send({ status: false, msg: "No such blog found" });
         }
@@ -138,7 +138,6 @@ const deleteBlogById = async function (req, res) {
             .status(404)
             .send({ status: false, msg: "Blog already deleted" });
         }
->>>>>>> a33afb0de0c3de403ea04c27c9222a0dc1a7557b
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
