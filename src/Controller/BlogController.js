@@ -128,14 +128,14 @@ const deleteByQuery = async function (req, res) {
             return res.status(400).send({ status: false, msg: "Invalid request parameters. Please provide query details" });
         }
         
-        if (!authorId) {
-            return res.status(400).send({ status: false, msg: "authorId is required" })
-        }
-        else {
-            if (!validator.isValidObjectId(authorId)) {
-                return res.status(400).send({ status: false, msg: "authorId is not valid." });
-            }
-        }
+        // if (!authorId) {
+        //     return res.status(400).send({ status: false, msg: "authorId is required" })
+        // }
+        // else {
+        //     if (!validator.isValidObjectId(authorId)) {
+        //         return res.status(400).send({ status: false, msg: "authorId is not valid." });
+        //     }
+        // }
         let data = await blogModel.find(conditions);
 
         if (!data) {
