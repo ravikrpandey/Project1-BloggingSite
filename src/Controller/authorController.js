@@ -42,10 +42,10 @@ const loginAuthor = async function (req, res) {
                 }, "Roshan"
             );
             res.setHeader("x-api-token",token)
-            res.status(201).send({ status:true,msg: "token sucssfully created", token: token });
+            res.status(200).send({ status:true,msg: "User logged in Successfully", token: token });
         };
         if (!author) {
-            res.status(401).send({ status:false,msg: "Login deatils are invalid" })
+            res.status(400).send({ status:false,msg: "Login deatils are invalid" })
         };
     }
     catch(err){res.status(500).send({status:false,msg:err.message})}

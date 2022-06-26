@@ -24,6 +24,8 @@ const checker = function (data) {
   }
   data.fname = data.fname.trim();
   data.lname = data.lname.trim();
+  data.title = data.title.trim();
+
 
   if (data.fname == "") {
     const f2info = "fname is required"
@@ -96,6 +98,12 @@ const checker = function (data) {
 };
 
 const checkerBlog = function (data) {
+
+data.title=data.title.trim()
+data.body=data.body.trim()
+data.category=data.category.trim()
+
+ 
   let missData = "";
   let arr = ["title", "body", "authorId", "tags", "category","subcategory"]
   for (let i = 0; i < arr.length; i++) {
@@ -106,6 +114,22 @@ const checkerBlog = function (data) {
   if (missData) {
     return (missData + " is missing")
   }
+  
+  
+if (data.title==""){missData=missData+"title cannot be empty    "}
+if (data.body==""){missData=missData+"body cannot be empty    "}
+
+if (data.tags.length==0){missData=missData+"tags cannot be empty    "}
+if (data.category==""){missData=missData+"category cannot be empty    "}
+if (data.subcategory.length==0){missData=missData+"subcategory cannot be empty    "}
+if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isDeleted==""){missData=missData+"isDeleted cannot be empty    "}}
+if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isPublished==""){missData=missData+"isPublished cannot be empty    "}}
+
+
+if (missData) {
+    return (missData)
+  }
+
 }
 
 

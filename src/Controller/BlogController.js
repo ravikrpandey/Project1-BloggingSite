@@ -7,6 +7,7 @@ const validate = require("../validator/validator")
 const createBlog = async function (req, res) {
     try {
         let data = req.body
+       
         let val = validate.checkerBlog(data)
         
         if ( val) {
@@ -30,7 +31,9 @@ const createBlog = async function (req, res) {
 const getBlog = async function (req, res) {
     try {
         let filters = req.query
+       
         Object.keys(filters).forEach(x => filters[x] = filters[x].trim())
+       
 
         if (Object.keys(filters).length === 0) {
 
@@ -118,7 +121,7 @@ const deleteBlogById = async function (req, res) {
         let Blog = await blogModel.findOne({ _id: id });
 
         if (!Blog) {
-          return res.status(400).send({ status: false, msg: "No such blog found" });
+          return res.status(404).send({ status: false, msg: "No such blog found" });
         }
     
         if (Blog.isDeleted == false) {
@@ -127,9 +130,7 @@ const deleteBlogById = async function (req, res) {
             { isDeleted: true, deletedAt: Date() },
             { new: true }
           );
-          return res.status(200).send({
-            status: true,
-            message: "successfully deleted blog",
+          return res.status(200).send({status: true,message: "successfully deleted blog",
           });
         } else {
           return res
@@ -147,15 +148,6 @@ const deleteByQuery = async function (req, res) {
 
         if (!validator.isValidRequestBody(conditions)) {
             return res.status(400).send({ status: false, msg: "Invalid request parameters. Please provide query details" });
-        }
-        
-        if (!authorId) {
-            return res.status(400).send({ status: false, msg: "authorId is required" })
-        }
-        else {
-            if (!validator.isValidObjectId(authorId)) {
-                return res.status(400).send({ status: false, msg: "authorId is not valid." });
-            }
         }
         let data = await blogModel.find(conditions);
 

@@ -11,7 +11,7 @@ const authAndAuthorize = async function (req, res, next) {
         let decodedToken = jwt.verify(token, "Roshan");
         if (!decodedToken) {
 
-            return res.status(403).send({ status: false, msg: "token is invalid" });
+            return res.status(401).send({ status: false, msg: "token is invalid" });
         }
         if (req.body.authorId) {
             let authorLoggedIn = req.body.authorId
@@ -58,7 +58,7 @@ const authenticate = async function (req, res, next) {
 
         if (!decodedToken) {
 
-            return res.status(403).send({ status: false, msg: "token is invalid" });
+            return res.status(401).send({ status: false, msg: "token is invalid" });
         }
 
         next()
