@@ -5,6 +5,7 @@ const validator = require("../validator/validator")
 const createBlog = async function (req, res) {
     try {
         let data = req.body
+        data.authorId=data.authorId.trim();
         let authorId = await authorModel.find({ _id: data.authorId })
         if (authorId.length) {
             let savedData = await blogModel.create(data)
