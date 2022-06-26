@@ -1,6 +1,6 @@
 
 const jwt = require("jsonwebtoken");
-const BlogModel1 = require("../model/BlogModel1");
+const blogModel = require("../model/blogModel");
 
 const authAndAuthorize = async function (req, res, next) {
     try {
@@ -22,7 +22,7 @@ const authAndAuthorize = async function (req, res, next) {
         }
         if (req.params.blogId) {
             blogId = req.params.blogId
-            data = await BlogModel1.findById(blogId)
+            data = await blogModel.findById(blogId)
             if (decodedToken.authorId != data.authorId.toString()) {
             
                 return res.status(403).send({ status: false, msg: "You are not allowed to modify or publish" });
