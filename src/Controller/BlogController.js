@@ -21,7 +21,9 @@ const createBlog = async function (req, res) {
 const getBlog = async function (req, res) {
     try {
         let filters = req.query
+        console.log(filters)
         Object.keys(filters).forEach(x => filters[x] = filters[x].trim())
+        console.log(filters)
 
         if (Object.keys(filters).length === 0) {
 
@@ -34,27 +36,17 @@ const getBlog = async function (req, res) {
             filters.isDeleted = false
             filters.isPublished = true
             if (filters.tags) {
-                let tagArray
                 if (filters.tags.includes(",")) {
-                    tagArray = filters.tags.split(",").map(String).map(x => x.trim())
+                    let tagArray = filters.tags.split(",").map(String).map(x => x.trim())
                     filters.tags = { $all: tagArray }
                 }
-                // else {
-                //     tagArray = filters.tags.trim().split(" ").map(String).map(x => x.trim())
-                //     filters.tags = { $all: tagArray }
-                // }
             }
 
             if (filters.subcategory) {
-                let subcatArray
                 if (filters.subcategory.includes(",")) {
-                    subcatArray = filters.subcategory.split(",").map(String).map(x => x.trim())
+                   let subcatArray = filters.subcategory.split(",").map(String).map(x => x.trim())
                     filters.subcategory = { $all: subcatArray }
                 }
-                // else {
-                //     subcatArray = filters.subcategory.trim().split(" ").map(String).map(x => x.trim())
-                //     filters.subcategory = { $all: subcatArray }
-                // }
             }
 
 
@@ -90,7 +82,6 @@ const updateBlog = async function (req, res) {
             if(userData.tags){
                 userData.$push.tags =  userData.tags 
                 delete userData.tags
-
             }
             if (userData.subcategory) {
                 userData.$push.subcategory = userData.subcategory
