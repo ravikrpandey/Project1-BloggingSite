@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const authorModel = require("../Model/authorModel");
 
 
 const isValidObjectId = function (objectId) {
@@ -10,39 +11,75 @@ const isValidObjectId = function (objectId) {
   };
   const checker=function(data){
     let rdata="";
-    // if (!/^[a-zA-Z]+$/.test(data.fname)||!/^[a-zA-Z]+$/.test(data.lname)){
-    //     const f1info="  fname or lname cannot be empty and cannot have spaces "
-    //     rdata=rdata+f1info;
-    // }
- 
-    if ( /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.fname)|| /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.lname)){
-        const specialchar="  fanme and lname cannot  have special charaters or white spaces "
-        rdata=rdata+specialchar;
-    }
-    else if (/\d/.test(data.fname)||/\d/.test(data.lname)){
-        const f2info="  fname and lname cannot have numbers "
+
+     if (data.fname==""){
+        const f2info="fname is required "
         rdata=rdata+f2info;
 
     }
+    else if ( /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.fname)){
+        const specialchar="fname cannot have special charaters or white spaces "
+        rdata=rdata+specialchar;
+    }
+    else if (/\d/.test(data.fname)){
+        const f2info="fname cannot have numbers "
+        rdata=rdata+f2info;
+
+    };
+    if (data.lname==""){
+        const f2info="lname cannot be empty "
+        rdata=rdata+f2info;
+
+    }
+    else if (/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.lname)){
+        const specialchar="lname cannot  have special charaters or white spaces "
+        rdata=rdata+specialchar;
+    }
+    else if (/\d/.test(data.lname)){
+        const f2info="lname cannot have numbers "
+        rdata=rdata+f2info;
+
+    };
+    if (data.title==""){
+        const tinfo="Title is required "
+        rdata=rdata+tinfo;
+    }
+
+    else if(data.title!="Mr"||data.title!="Mrs"||data.title!="Miss"){
+        const tinfo="Title must be Mr, Mrs or Miss  "
+        rdata=rdata+tinfo;
+
+    };
      
-   
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)){
-        const emailvalidator="Email is invalid "
+    if (data.email==""){
+        const Einfo="Email is required "
+        rdata=rdata+Einfo;
+
+    }
+    else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)){
+        const emailvalidator="Email is invalid  "
         rdata=rdata+emailvalidator;
     }
-    if (/\s/.test(data.password)){
+    else if (authorModel.findOne({email:data.email})){
+        const emailvalidator="Email must be unique "
+        rdata=rdata+emailvalidator;
+    } ;
+    if (data.password==""){
+        const pinfo="Password is required "
+        rdata=rdata+pinfo;
+
+    }
+   
+    else if (/\s/.test(data.password)){
         const pass="password must not have spaces "
         rdata=rdata+pass;
     }
     
-    else if (data.password.length<6){
-        const pass="password must be more than 6characters "
-        rdata=rdata+pass;
-    }
     else if(!/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.password)){
         const pass="password must have a special character present "
         rdata=rdata+pass;
-    }
+    };
+   
     return rdata
    
 };

@@ -5,8 +5,11 @@ const jwt=require("jsonwebtoken")
 const createAuthor = async function (req, res) {
     try {
         let data = req.body
+        data.fname=data.fname.trim();
+        data.lname=data.lname.trim();
+
         let val = validate.checker(data)
-        varidator
+        
         if (val) {
             res.status(400).send({ invalid: val })
         }
