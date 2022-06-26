@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const authorController= require("../Controller/authorController")
-const BlogController= require("../Controller/blogController")
+const blogController= require("../Controller/blogController")
 const middleware= require("../Middleware/auth")
 
 
@@ -14,15 +14,15 @@ router.post("/Authors", authorController.createAuthor);
 
 router.post("/login", authorController.loginAuthor);
 
-router.post("/Blogs", middleware.authAndAuthorize,BlogController.createBlog);
+router.post("/Blogs", middleware.authAndAuthorize,blogController.createBlog);
 
-router.get("/Blogs", middleware.authenticate,BlogController.getBlog);
+router.get("/Blogs", middleware.authenticate,blogController.getBlog);
 
-router.delete("/blogs/:blogId",middleware.authAndAuthorize, BlogController.deleteBlogById);
+router.delete("/blogs/:blogId",middleware.authAndAuthorize, blogController.deleteBlogById);
 
-router.delete('/blogs',middleware.authAndAuthorize, BlogController.deleteByQuery );
+router.delete('/blogs',middleware.authAndAuthorize, blogController.deleteByQuery );
 
-router.put("/Blogs/:blogId",middleware.authAndAuthorize, BlogController.updateBlog);
+router.put("/Blogs/:blogId",middleware.authAndAuthorize, blogController.updateBlog);
 
 
 

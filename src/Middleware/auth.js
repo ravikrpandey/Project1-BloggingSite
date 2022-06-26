@@ -1,6 +1,6 @@
 
 const jwt = require("jsonwebtoken");
-const blogModel = require("../model/blogModel");
+const blogModel = require("../Model/blogModel");
 
 const authAndAuthorize = async function (req, res, next) {
     try {
