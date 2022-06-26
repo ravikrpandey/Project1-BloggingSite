@@ -115,10 +115,10 @@ const deleteBlogById = async function (req, res) {
 
         let data = await blogModel.findOne({ _id: id });
         if (!data) {
-            return res.status(400).send({ status: false, msg: "No such blog found" })
+            return res.status(404).send({ status: false, msg: "No such blog found" })
         }
         let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: Date() }, { new: true })
-        res.status(200).send({ status: true, data: Update })
+        res.status(200).send({ status: true, msg: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
@@ -126,9 +126,9 @@ const deleteBlogById = async function (req, res) {
 const deleteByQuery = async function (req, res) {
     try {
         let conditions = req.query
-        conditions.isDeleted = false
-        console.log(conditions)
-        if (!validator.isValidRequestBody(req.query)) {
+        conditions.isDeleted=false
+ 
+        if (!validator.isValidRequestBody(conditions)) {
             return res.status(400).send({ status: false, msg: "Invalid request parameters. Please provide query details" });
         }
 
@@ -137,16 +137,16 @@ const deleteByQuery = async function (req, res) {
         }
         else {
             if (!validator.isValidObjectId(authorId)) {
-                return res.status(400).send({ status: false, msg: `authorId is not valid.` });
-            }
+                return res.status(400).send({ status: false, msg: "authorId is not valid." });
+        }
         }
         let data = await blogModel.find(conditions);
-        // console.log(dataa)
+  
         if (!data) {
             return res.status(403).send({ status: false, msg: "no such data exists" })
         }
-        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
-        res.send({ status: true, data: Update })
+        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: true, deletedAt:new Date()} }, { new: true })
+        res.status(200).send({ status: true, msg: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
