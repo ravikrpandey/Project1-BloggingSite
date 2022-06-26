@@ -104,17 +104,32 @@ const updateBlog = async function (req, res) {
 const deleteBlogById = async function (req, res) {
 
     try {
+
         let id = req.params.blogId;
         if (!validator.isValidObjectId(id)) {
             return res.status(400).send({ status: false, msg: `BlogId is invalid.` });
         }
+        let Blog = await blogModel.findOne({ _id: id });
 
-        let data = await blogModel.findOne({ _id: id });
-        if (!data) {
-            return res.status(404).send({ status: false, msg: "No such blog found" })
+        if (!Blog) {
+          return res.status(400).send({ status: false, msg: "No such blog found" });
         }
-        let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: Date() }, { new: true })
-        res.status(200).send({ status: true, msg: Update })
+    
+        if (Blog.isDeleted == false) {
+          let Update = await blogModel.findOneAndUpdate(
+            { _id: id },
+            { isDeleted: true, deletedAt: Date() },
+            { new: true }
+          );
+          return res.status(200).send({
+            status: true,
+            message: "successfully deleted blog",
+          });
+        } else {
+          return res
+            .status(404)
+            .send({ status: false, msg: "Blog already deleted" });
+        }
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
