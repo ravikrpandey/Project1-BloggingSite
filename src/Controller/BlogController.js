@@ -30,9 +30,7 @@ const createBlog = async function (req, res) {
 const getBlog = async function (req, res) {
     try {
         let filters = req.query
-        console.log(filters)
         Object.keys(filters).forEach(x => filters[x] = filters[x].trim())
-        console.log(filters)
 
         if (Object.keys(filters).length === 0) {
 
