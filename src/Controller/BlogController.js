@@ -66,7 +66,7 @@ const updateBlog = async function (req, res) {
     try {
         let blogId = req.params.blogId;
         if (!validator.isValidObjectId(blogId)) {
-            return res.status(400).send({ status: false, msg: `BlogId is invalid. \n  and change it` });
+            return res.status(400).send({ status: false, msg: `BlogId is invalid.` });
         }
         let user = await blogModel.findById(blogId);
 
@@ -108,11 +108,11 @@ const deleteBlogById = async function (req, res) {
             return res.status(400).send({ status: false, msg: `BlogId is invalid.` });
         }
 
-        let data = await blogModel.findOne({ _id: id });
+        let data = await blogModel.findOne({ _id: id, isDeleted:false });
         if (!data) {
             return res.status(404).send({ status: false, msg: "No such blog found" })
         }
-        let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: Date() }, { new: true })
+        let Update = await blogModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: new Date() }, { new: true })
         res.status(200).send({ status: true, msg: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
@@ -140,7 +140,7 @@ const deleteByQuery = async function (req, res) {
         if (!data) {
             return res.status(404).send({ status: false, msg: "no such data exists" })
         }
-        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
+        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: false, deletedAt: new Date() } }, { new: true })
         res.status(200).send({ status: true, msg: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
