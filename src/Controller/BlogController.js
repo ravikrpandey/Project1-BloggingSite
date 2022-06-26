@@ -1,4 +1,4 @@
-const blogModel = require("../model/BlogModel1")
+const blogModel = require("../model/blogModel")
 const validator = require("../validator/validator")
 
 const createBlog = async function (req, res) {
@@ -143,7 +143,7 @@ const deleteByQuery = async function (req, res) {
         }
 
         if (!authorId) {
-            return res.status(400).send({ status: false, msg: "autherId is required" })
+            return res.status(400).send({ status: false, msg: "authorId is required" })
         }
         else {
             if (!validator.isValidObjectId(authorId)) {

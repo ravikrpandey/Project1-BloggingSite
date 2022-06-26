@@ -1,8 +1,6 @@
-const Express = require('express')
-const { default: mongoose } = require('mongoose')
-const Mongoose = require('mongoose') 
+const mongoose = require('mongoose') 
 
-const autherSchema = new mongoose.Schema( {
+const authorSchema = new mongoose.Schema( {
 
    fname: {
     type: String,
@@ -34,4 +32,4 @@ const autherSchema = new mongoose.Schema( {
 
 },{timestamps: true});
 
-module.exports = mongoose.model('Auther', autherSchema);
+module.exports = mongoose.model('Author', authorSchema);
