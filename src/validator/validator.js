@@ -123,8 +123,8 @@ if (data.body==""){missData=missData+"body cannot be empty.    "}
 if (data.tags.length==0){missData=missData+"tags cannot be empty.    "}
 if (data.category==""){missData=missData+"category cannot be empty.    "}
 if (data.subcategory.length==0){missData=missData+"subcategory cannot be empty.    "}
-if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isDeleted==""){missData=missData+"isDeleted cannot be empty.    "}}
-if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isPublished==""){missData=missData+"isPublished cannot be empty.    "}}
+// if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isDeleted==""){missData=missData+"isDeleted cannot be empty.    "}}
+// if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isPublished==""){missData=missData+"isPublished cannot be empty.    "}}
 
 
 if (missData) {
