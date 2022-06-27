@@ -18,13 +18,13 @@ const createBlog = async function (req, res) {
        
         if (authorId.length) {
             let savedData = await blogModel.create(data)
-            res.status(201).send({ msg: savedData })
+            res.status(201).send({ status:true,data: savedData })
         }
         if (!authorId.length) {
-            res.status(400).send({ msg: "authorid is not valid" })
+            res.status(400).send({ status:false,msg: "authorid is not valid" })
         }
     }
-    catch (err) { res.status(500).send(err.message) }
+    catch (err) { res.status(500).send({status:false,msg:err.message}) }
 }
 
 
@@ -39,7 +39,7 @@ const getBlog = async function (req, res) {
 
             let blogs = await blogModel.find({ isDeleted: false, isPublished: true })
             if (blogs.length == 0) res.status(404).send({ status: false, msg: "No result found" })
-            res.status(200).send({ status: true, msg: blogs })
+            res.status(200).send({ status: true, data: blogs })
 
         } else {
 
@@ -62,7 +62,7 @@ const getBlog = async function (req, res) {
 
             let filteredBlogs = await blogModel.find(filters)
             if (filteredBlogs.length === 0) return res.status(404).send({ status: false, msg: "No such data available" })
-            else return res.status(200).send({ status: true, msg: filteredBlogs })
+            else return res.status(200).send({ status: true, data: filteredBlogs })
         }
 
     }
@@ -101,7 +101,7 @@ const updateBlog = async function (req, res) {
         userData.isPublished = true
         userData.publishedAt = new Date()
         let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId }, userData, { new: true });
-        res.status(200).send({ status: true, msg: updatedBlog });
+        res.status(200).send({ status: true, data: updatedBlog });
 
     } catch (err) {
         console.log("This is the error:", err.message)
@@ -130,7 +130,7 @@ const deleteBlogById = async function (req, res) {
             { isDeleted: true, deletedAt: Date() },
             { new: true }
           );
-          return res.status(200).send({status: true,message: "successfully deleted blog",
+          return res.status(200).send({status: true,data: Update,
           });
         } else {
           return res
@@ -155,7 +155,7 @@ const deleteByQuery = async function (req, res) {
             return res.status(404).send({ status: false, msg: "no such data exists" })
         }
         let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: false, deletedAt: new Date() } }, { new: true })
-        res.status(200).send({ status: true, msg: Update })
+        res.status(200).send({ status: true, data: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }

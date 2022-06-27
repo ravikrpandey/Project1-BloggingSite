@@ -17,7 +17,7 @@ const createAuthor = async function (req, res) {
                 return res.status(400).send({status:false, msg:"emailid must be unique"})
               };
             let savedData = await authorModel.create(data)
-            res.status(201).send({ status:true,msg: savedData })
+            res.status(201).send({ status:true,data: savedData })
         }
     }
     catch (err) {
@@ -42,7 +42,7 @@ const loginAuthor = async function (req, res) {
                 }, "Roshan"
             );
             res.setHeader("x-api-token",token)
-            res.status(200).send({ status:true,msg: "User logged in Successfully", token: token });
+            res.status(200).send({ status:true,data: "User logged in Successfully", token: token });
         };
         if (!author) {
             res.status(400).send({ status:false,msg: "Login deatils are invalid" })
