@@ -90,11 +90,11 @@ const updateBlog = async function (req, res) {
         if (userData.tags||userData.subcategory) {
             userData.$push = {}
             if(userData.tags){
-                userData.$push.tags =  userData.tags 
+                userData.$push.tags =  userData.tags.split(",") 
                 delete userData.tags
             }
             if (userData.subcategory) {
-                userData.$push.subcategory = userData.subcategory
+                userData.$push.subcategory = userData.subcategory.split(",")
                 delete userData.subcategory
             }
         }

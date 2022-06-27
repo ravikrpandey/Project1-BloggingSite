@@ -28,21 +28,21 @@ const checker = function (data) {
 
 
   if (data.fname == "") {
-    const f2info = "fname is required"
+    const f2info = "fname is required.   "
     rdata = rdata + f2info;
 
   }
   else if (/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.fname)) {
-    const specialchar = "fname cannot have special charaters."
+    const specialchar = "fname cannot have special charaters.   "
     rdata = rdata + specialchar;
   }
   else if (/\d/.test(data.fname)) {
-    const f2info = "fname cannot have numbers "
+    const f2info = "fname cannot have numbers.   "
     rdata = rdata + f2info;
 
   };
   if (data.lname == "") {
-    const f2info = "lname cannot be empty "
+    const f2info = "lname cannot be empty.   "
     rdata = rdata + f2info;
 
   }
@@ -51,45 +51,45 @@ const checker = function (data) {
     rdata = rdata + specialchar;
   }
   else if (/\d/.test(data.lname)) {
-    const f2info = "lname cannot have numbers "
+    const f2info = "lname cannot have numbers.   "
     rdata = rdata + f2info;
 
   };
   if (data.title == "") {
-    const tinfo = "Title is required "
+    const tinfo = "Title is required.   "
     rdata = rdata + tinfo;
   }
 
   else if (["Mr","Mrs","Miss"].indexOf(data.title)===-1) {
-    const tinfo = "Title must be Mr, Mrs or Miss  "
+    const tinfo = "Title must be Mr, Mrs or Miss.   "
     rdata = rdata + tinfo;
 
   };
 
   if (data.email == "") {
-    const Einfo = "Email is required "
+    const Einfo = "Email is required.   "
     rdata = rdata + Einfo;
 
   }
   else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)) {
-    const emailvalidator = "Email is invalid  "
+    const emailvalidator = "Email is invalid.   "
     rdata = rdata + emailvalidator;
   }
  
 
   if (data.password == "") {
-    const pinfo = "Password is required "
+    const pinfo = "Password is required.   "
     rdata = rdata + pinfo;
 
   }
 
   else if (/\s/.test(data.password)) {
-    const pass = "password must not have spaces "
+    const pass = "password must not have spaces.   "
     rdata = rdata + pass;
   }
 
   else if (!/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.password)) {
-    const pass = "password must have a special character present "
+    const pass = "password must have a special character present.   "
     rdata = rdata + pass;
   };
 
@@ -116,14 +116,14 @@ data.category=data.category.trim()
   }
   
   
-if (data.title==""){missData=missData+"title cannot be empty    "}
-if (data.body==""){missData=missData+"body cannot be empty    "}
+if (data.title==""){missData=missData+"title cannot be empty.    "}
+if (data.body==""){missData=missData+"body cannot be empty.    "}
 
-if (data.tags.length==0){missData=missData+"tags cannot be empty    "}
-if (data.category==""){missData=missData+"category cannot be empty    "}
-if (data.subcategory.length==0){missData=missData+"subcategory cannot be empty    "}
-if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isDeleted==""){missData=missData+"isDeleted cannot be empty    "}}
-if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isPublished==""){missData=missData+"isPublished cannot be empty    "}}
+if (data.tags.length==0){missData=missData+"tags cannot be empty.    "}
+if (data.category==""){missData=missData+"category cannot be empty.    "}
+if (data.subcategory.length==0){missData=missData+"subcategory cannot be empty.    "}
+if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isDeleted==""){missData=missData+"isDeleted cannot be empty.    "}}
+if(!(data.isDeleted==true||data.isDeleted==false)){if (data.isPublished==""){missData=missData+"isPublished cannot be empty.    "}}
 
 
 if (missData) {
