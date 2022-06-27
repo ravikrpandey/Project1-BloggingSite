@@ -55,6 +55,7 @@ const authenticate = async function (req, res, next) {
         if (!token) return res.send({ status: false, msg: "token must be present" });
 
         let decodedToken = jwt.verify(token, "Roshan");
+       
 
         if (!decodedToken) {
 
