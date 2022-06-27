@@ -151,7 +151,7 @@ const deleteByQuery = async function (req, res) {
         }
         let data = await blogModel.find(conditions);
 
-        if (!data) {
+        if (data.length==0) {
             return res.status(404).send({ status: false, msg: "no such data exists" })
         }
         let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: false, deletedAt: new Date() } }, { new: true })
