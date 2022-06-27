@@ -88,10 +88,10 @@ const checker = function (data) {
     rdata = rdata + pass;
   }
 
-  else if (!/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.password)) {
-    const pass = "password must have a special character present.   "
-    rdata = rdata + pass;
-  };
+  // else if (!/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.password)) {
+  //   const pass = "password must have a special character present.   "
+  //   rdata = rdata + pass;
+  // };
 
   return rdata
 
