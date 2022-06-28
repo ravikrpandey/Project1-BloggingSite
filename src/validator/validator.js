@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const authorModel = require("../Model/authorModel");
 
-
 const isValidObjectId = function (objectId) {
   return mongoose.Types.ObjectId.isValid(objectId);
 };
@@ -19,9 +18,11 @@ const checker = function (data) {
       missData = missData + " " + arr[i];
     }
   }
+
   if (missData) {
     return (missData + " is missing")
   }
+
   data.fname = data.fname.trim();
   data.lname = data.lname.trim();
   data.title = data.title.trim();
@@ -88,11 +89,6 @@ const checker = function (data) {
     rdata = rdata + pass;
   }
 
-  // else if (!/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(data.password)) {
-  //   const pass = "password must have a special character present.   "
-  //   rdata = rdata + pass;
-  // };
-
   return rdata
 
 };
@@ -105,9 +101,11 @@ const checkerBlog = function (data) {
       missData = missData + " " + arr[i];
     }
   }
+
   if (missData) {
     return (missData + " is missing")
   }
+
   data.authorId = data.authorId.trim()
   data.title = data.title.trim()
   data.body = data.body.trim()
@@ -122,25 +120,14 @@ const checkerBlog = function (data) {
   if (data.category == "") { missData = missData + "category cannot be empty.    " }
   if (data.subcategory.length == 0) { missData = missData + "subcategory cannot be empty.    " }
 
-
-
   if (missData) {
     return (missData)
   }
-
-
-
   
 }
 
+module.exports = { isValidObjectId,isValidRequestBody,checker,checkerBlog }
 
-
-
-
-module.exports.isValidObjectId = isValidObjectId;
-module.exports.isValidRequestBody = isValidRequestBody;
-module.exports.checker = checker;
-module.exports.checkerBlog = checkerBlog;
 
 
 
