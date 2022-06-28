@@ -21,7 +21,7 @@ const authAndAuthorize = async function (req, res, next) {
             }
         }
         if (req.params.blogId) {
-            blogId = req.params.blogId
+           let  blogId = req.params.blogId
             if(blogId.length!=24) return res.status(400).send({status:false, msg: "BlogId is invalid."})
             if(!await blogModel.findOne({_id:blogId}))return res.status(400).send({status:false, msg: "BlogId is invalid."})
             data = await blogModel.findById(blogId)
