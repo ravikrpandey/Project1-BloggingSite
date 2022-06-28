@@ -161,7 +161,7 @@ const deleteByQuery = async function (req, res) {
         if (data.length==0) {
             return res.status(404).send({ status: false, msg: "no such data exists" })
         }
-        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: false, deletedAt: new Date() } }, { new: true })
+        let Update = await blogModel.updateMany(conditions, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
         res.status(200).send({ status: true, data: Update })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
