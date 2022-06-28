@@ -28,7 +28,7 @@ const checker = function (data) {
 
 
   if (data.fname == "") {
-    const f2info = "fname is required.   "
+    const f2info = "fname can't be empty.   "
     rdata = rdata + f2info;
 
   }
@@ -42,7 +42,7 @@ const checker = function (data) {
 
   };
   if (data.lname == "") {
-    const f2info = "lname cannot be empty.   "
+    const f2info = "lname can't be empty.   "
     rdata = rdata + f2info;
 
   }
@@ -56,7 +56,7 @@ const checker = function (data) {
 
   };
   if (data.title == "") {
-    const tinfo = "Title is required.   "
+    const tinfo = "Title can't be empty.   "
     rdata = rdata + tinfo;
   }
 
@@ -67,7 +67,7 @@ const checker = function (data) {
   };
 
   if (data.email == "") {
-    const Einfo = "Email is required.   "
+    const Einfo = "Email can't be empty.   "
     rdata = rdata + Einfo;
 
   }
@@ -78,7 +78,7 @@ const checker = function (data) {
  
 
   if (data.password == "") {
-    const pinfo = "Password is required.   "
+    const pinfo = "Password can't be empty.   "
     rdata = rdata + pinfo;
 
   }
