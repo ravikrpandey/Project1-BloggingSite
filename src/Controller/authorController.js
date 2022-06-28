@@ -9,7 +9,6 @@ const createAuthor = async function (req, res) {
         let val = validate.checker(data)
         
         if ( val) {
-            console.log(val)
             res.status(400).send({ status:false,msg: val })
         }
         if (!val) {

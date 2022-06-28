@@ -13,6 +13,9 @@ const createBlog = async function (req, res) {
         if ( val) {
             return res.status(400).send({ status:false,msg: val })
         }
+        if(!data.authorId||data.authorId===undefined){
+            res.status(400).send({status:false,msg:"authorId cant be empty."})
+        }
         data.authorId=data.authorId.trim();
         let authorId = await authorModel.find({ _id: data.authorId })
        
@@ -21,7 +24,7 @@ const createBlog = async function (req, res) {
             res.status(201).send({ status:true,data: savedData })
         }
         if (!authorId.length) {
-            res.status(400).send({ status:false,msg: "authorid is not valid" })
+            res.status(400).send({ status:false,msg: "authorid is not valid." })
         }
     }
     catch (err) { res.status(500).send({status:false,msg:err.message}) }
@@ -98,13 +101,17 @@ const updateBlog = async function (req, res) {
                 delete userData.subcategory
             }
         }
-        userData.isPublished = true
-        userData.publishedAt = new Date()
+        if(userData.isPublished===false){
+            userData.publishedAt = null
+        }
+        else{
+            userData.isPublished = true
+            userData.publishedAt = new Date()
+        }
         let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId }, userData, { new: true });
         res.status(200).send({ status: true, data: updatedBlog });
 
     } catch (err) {
-        console.log("This is the error:", err.message)
         res.status(500).send({ status: false, msg: err.message })
     }
 };
