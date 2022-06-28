@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const authorModel = require("../Model/authorModel");
 
 
-const isValidObjectId =  function (objectId) {
+const isValidObjectId = function (objectId) {
   return mongoose.Types.ObjectId.isValid(objectId);
 };
 
@@ -60,7 +60,7 @@ const checker = function (data) {
     rdata = rdata + tinfo;
   }
 
-  else if (["Mr","Mrs","Miss"].indexOf(data.title)===-1) {
+  else if (["Mr", "Mrs", "Miss"].indexOf(data.title) === -1) {
     const tinfo = "Title must be Mr, Mrs or Miss.   "
     rdata = rdata + tinfo;
 
@@ -75,7 +75,7 @@ const checker = function (data) {
     const emailvalidator = "Email is invalid.   "
     rdata = rdata + emailvalidator;
   }
- 
+
 
   if (data.password == "") {
     const pinfo = "Password can't be empty.   "
@@ -98,14 +98,8 @@ const checker = function (data) {
 };
 
 const checkerBlog = function (data) {
-  data.authorId=data.authorId.trim()
-data.title=data.title.trim()
-data.body=data.body.trim()
-data.category=data.category.trim()
-
- 
   let missData = "";
-  let arr = ["title", "body", "authorId", "tags", "category","subcategory"]
+  let arr = ["title", "body", "authorId", "tags", "category", "subcategory"]
   for (let i = 0; i < arr.length; i++) {
     if (!Object.keys(data).includes(arr[i])) {
       missData = missData + " " + arr[i];
@@ -114,22 +108,29 @@ data.category=data.category.trim()
   if (missData) {
     return (missData + " is missing")
   }
-  
-if (data.authorId==""){missData=missData+"authorId cannot be empty.    "}
-  
-if (data.title==""){missData=missData+"title cannot be empty.    "}
-if (data.body==""){missData=missData+"body cannot be empty.    "}
+  data.authorId = data.authorId.trim()
+  data.title = data.title.trim()
+  data.body = data.body.trim()
+  data.category = data.category.trim()
 
-if (data.tags.length==0){missData=missData+"tags cannot be empty.    "}
-if (data.category==""){missData=missData+"category cannot be empty.    "}
-if (data.subcategory.length==0){missData=missData+"subcategory cannot be empty.    "}
+  if (data.authorId == "") { missData = missData + "authorId cannot be empty.    " }
+
+  if (data.title == "") { missData = missData + "title cannot be empty.    " }
+  if (data.body == "") { missData = missData + "body cannot be empty.    " }
+
+  if (data.tags.length == 0) { missData = missData + "tags cannot be empty.    " }
+  if (data.category == "") { missData = missData + "category cannot be empty.    " }
+  if (data.subcategory.length == 0) { missData = missData + "subcategory cannot be empty.    " }
 
 
 
-if (missData) {
+  if (missData) {
     return (missData)
   }
 
+
+
+  
 }
 
 
