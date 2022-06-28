@@ -98,7 +98,7 @@ const checker = function (data) {
 };
 
 const checkerBlog = function (data) {
-
+  data.authorId=data.authorId.trim()
 data.title=data.title.trim()
 data.body=data.body.trim()
 data.category=data.category.trim()
@@ -115,6 +115,7 @@ data.category=data.category.trim()
     return (missData + " is missing")
   }
   
+if (data.authorId==""){missData=missData+"authorId cannot be empty.    "}
   
 if (data.title==""){missData=missData+"title cannot be empty.    "}
 if (data.body==""){missData=missData+"body cannot be empty.    "}
